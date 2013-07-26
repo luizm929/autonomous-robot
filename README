@@ -1,19 +1,20 @@
-Autonomous-robot is a project to create an arduino 
+Autonomous-robot is a project to create an arduino
 autonomous robot project. The project is mainly based
-in c/c++ code but some parts may be in assembly in 
+in c/c++ code but some parts may be in assembly in
 order to either lower the default frequency the arduino
-works in or just make the code perform faster.
-If you have any questions please write to 
-luizmartines@gmail.com
+runs on or just make the code perform faster.
 
 A FEW THINGS WORTH MENTIONING.
-When using dc motors(wheels) and thermometers, I found out 
-that if you try to make them work together they really don't
-so this is the reason I used aref pin in order for both 
-dcmotors and thermometer the worth smoothly. 
+When using dc motors(wheels) and thermometers, I found out
+that if you try to make them work together they really don't,
+so In order to prevent the some kind of dcmotor/sensor mishandling
+I used the aref pin on the arduino. and connected the sensor to 3.3v.
+Although this feels counter intuitive (connectin 5.0v and 3.3v) it works.
 
-The RGB LED's I am using, use one pin only. But the have a 
-few drawbacks mainly that you have to modify the function for 
-it to compute in as little time possible otherwise thermometer 
-the ultrasonic sensor will take longer to measure distance
-thus crashing everywhere.
+
+The RGB LED's I am using, use one pin only. But the have a
+few drawbacks mainly that you have to modify its function for
+it to compute in as little time possible otherwise thermometer
+the ultrasonic sensor will take longer to measure distance.
+
+If you have any questions contact me at luizmartines@gmail.com
