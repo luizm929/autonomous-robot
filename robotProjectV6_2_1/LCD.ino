@@ -10,10 +10,11 @@ void lcdMod(){
   lcd.print("Dist:");
   lcd.print(distance);
   lcd.print(" cm");
-  //lcd.print(" ");
-  //lcd.setCursor(8,1);
-  //lcd.print(voltage);
-  //lcd.print("V");
+  //Dist ultr sensor
+  lcd.print("  ");
+  lcd.setCursor(8,1);
+  lcd.print(chkDistance());
+  lcd.print("cm");
   int currTemp = chkTemp();
   lcd.setCursor(0, 0);
   // print the number of seconds since reset:
