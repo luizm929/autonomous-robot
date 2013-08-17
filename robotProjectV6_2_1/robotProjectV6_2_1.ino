@@ -1,8 +1,11 @@
 //LED NEO Pixel
-/*LATEST WORKING ROBOT !!!!!!!!!!!! as of July 2  2013
+/*LATEST WORKING ROBOT !!!!!!!!!!!! as of August 16 2013
  PROBLEMS TO SOLVE
  
- **Make navigation better. 
+ **Optimize navigation. 
+ **Maybe slowing down the clock in order to use less power.
+ **Make code shorter ( there are a lot of variables not in use.
+ **Optimize stepper.
  
  
  
