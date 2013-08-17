@@ -2,12 +2,15 @@
 /*LATEST WORKING ROBOT !!!!!!!!!!!! as of July 2  2013
  PROBLEMS TO SOLVE
  
- **RED LED deos not turn on to let me know it encountered an obstacle
- Only BLUE and GREEN turn on
+ **Make navigation better. 
  
  
  
  PROBLEMS ALREADY SOLVED
+ **Integrate the stepper motor to move the ultrasonic sensor in order to check 
+ distance in different directions
+ **RED LED deos not turn on to let me know it encountered an obstacle
+ Only BLUE and GREEN turn on
  **Ultrasonic would take too long to measure obstacle distance,
  the culprit was the for loop inside one of the funtcions of 
  the NEO_PIXEL example
@@ -29,7 +32,7 @@ int tempSensor = 0;  // Temp sensor at pin 0
 #include <AFMotor.h>  //we include the motor library
 AF_DCMotor motor1(4); //create motor1 at channel 4
 AF_DCMotor motor2(3); //create motor2 at channel 3
-AF_Stepper stepper(48, 1);// connect step motor with 48 steps per rev on mottor shield channel 1
+AF_Stepper stepper(200, 1);// connect step motor with 48 steps per rev on mottor shield channel 1
 #include <Wire.h> //Include the wire library to communicate with the LCD
 #include <Adafruit_MCP23017.h>     //include the adafruit library for the LCD
 #include <Adafruit_RGBLCDShield.h>  //Inlcude another library to communicate with LCD
@@ -51,9 +54,9 @@ void setup() {
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
 
-  motor1.setSpeed(120);// wheel motors speed
-  motor2.setSpeed(120);// wheel motors speed
-  stepper.setSpeed(130); //stepper which moves the ultrasonic sensor initial speed.
+  motor1.setSpeed(190);// wheel motors speed
+  motor2.setSpeed(190);// wheel motors speed
+  stepper.setSpeed(150); //stepper which moves the ultrasonic sensor initial speed.
   motor1.run(RELEASE); //This is neede in order for the motors to work (we also needed to stop the motors).
   motor2.run(RELEASE);
   strip.begin(); //Initialize the LED
@@ -73,45 +76,46 @@ void loop() {
   int distance = chkDistance();//We store the distance in a variabel to use in loop()
   Serial.println(chkDistance());
   lcdMod(); //we call the LCD function.
-  
-  if (distance > 20) {  // If you become too close to an obstacle
+  if (distance > 30) {  // If you become too close to an obstacle
     Fwd();
     DistanceColorSwitch(strip2.Color(0, 20, 0), 7); //Green
 
   }
-    else {
+  else {
     /*This is how we fill LED with color*/
     DistanceColorSwitch(strip2.Color(20, 0, 0), 7); //Red
     Halt();
     delay(1000);
-
     int distOnRight, distOnLeft;
-    distOnRight = TurnRight();
-    delay(300);
+
+    stepper.step(40, FORWARD, MICROSTEP); 
+    distOnLeft = chkDistance();
+    delay(1000);
+    Serial.print("Distance on Left");
+    Serial.println(distOnLeft);
+    stepper.step(40, BACKWARD, MICROSTEP); 
+    delay(1000);
+    stepper.step(40, BACKWARD, MICROSTEP); 
+    delay(1000);
+    stepper.step(40, FORWARD, MICROSTEP); 
+    distOnRight = chkDistance();
+    delay(1000);
     Serial.print("Distance on Right");
     Serial.println(distOnRight);
     
-    distOnLeft = TurnLeft();
-    delay(300);
-    Serial.print("Distance on Left");
-    Serial.println(distOnLeft);
    
     if(distOnRight > distOnLeft){
       TurnRight();
-      delay(500);
+      delay(700);  
       Fwd();
-          }
-//         else if(distOnRight <20 && distOnLeft < 20)
-//         {
-//         TurnLeft();
-//         delay(700);
-//         }  
-      else {
+    }
+    else {
       TurnLeft();
-      delay(500);
+      delay(700);
       Fwd();
-           }
-          
+    } 
+      
+
   }
   //if (distance >= 200 || distance <= 0){
   // Serial.println("Out of range");
@@ -125,7 +129,7 @@ void loop() {
   {
     //Temp Color switch
     TempColorSwitch(strip.Color(20, 0, 0), 7);//Red
-   // Serial.print("Too hot(F): ");//*************
+    // Serial.print("Too hot(F): ");//*************
     //Serial.println(Temp);        //**********
     delay(50);
   }
@@ -134,7 +138,7 @@ void loop() {
   {
     TempColorSwitch(strip.Color(0, 0, 20), 7); // Blue
 
-   // Serial.print("Nice Temp(F): ");//************
+    // Serial.print("Nice Temp(F): ");//************
     //Serial.println(Temp);          //************
     delay(50);
   }
