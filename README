@@ -11,7 +11,7 @@ and connected the sensor to 3.3v.
 
 The RGB LED's I am using, use one pin only. But there is a
 few drawbacks mainly that you have to modify the loop(make it loop in less time) used  for
-it to work in as little time possible otherwise thermometer
+it to work in as little time possible otherwise the
 the ultrasonic sensor will take longer to measure distance.
 
 If you have any questions contact me at luizmartines@gmail.com
